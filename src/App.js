@@ -47,6 +47,7 @@ function App() {
   return state.secretWord ? (
     <div className="container" data-test="component-app">
       <LanguageContext.Provider value={state.language}>
+        <h1>Jotto</h1>
         <LanguagePicker setLanguage={setLanguage} />
         <Input secretWord={state.secretWord} />
       </LanguageContext.Provider>
