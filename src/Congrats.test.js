@@ -2,8 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import LanguageContext from './contexts/LanguageContext';
+import successContext from './contexts/successContext';
 import Congrats from './Congrats';
-import { findByTestAttr, checkProps } from '../test/testUtils';
+import { findByTestAttr } from '../test/testUtils';
 
 /**
  * Setup is a factory function to create a shallowWrapper for Congrats.
@@ -17,7 +18,9 @@ const setup = ({ success, language }) => {
 
   return mount(
     <LanguageContext.Provider value={language}>
-      <Congrats success={success} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Congrats />
+      </successContext.SuccessProvider>
     </LanguageContext.Provider>
   )
 }
@@ -47,8 +50,4 @@ test('Renders non-empty congrats message when `success` prop is true', () => {
   const wrapper = setup({ success: true });
   const message = findByTestAttr(wrapper, 'congrats-message');
   expect(message.text().length).not.toBe(1);
-});
-test('Does not warning with expected props', () => {
-  const expectedProps = { success: true };
-  checkProps(Congrats, expectedProps);
 });
