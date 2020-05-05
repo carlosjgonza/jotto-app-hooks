@@ -12,7 +12,9 @@ function Input({ secretWord }) {
 
   const handleClick = (ev) => {
     // TODO - Update guessedWords
-    // TODO - Check against secretWord and update success if its required
+    // Check against secretWord and update success if its required
+    if(currentGuess === secretWord) setSuccess(true);
+    // Clear input box
     setCurrentGuess('');
 
     ev.preventDefault();
