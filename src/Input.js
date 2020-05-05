@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import LanguageContext from './contexts/LanguageContext';
+import languageContext from './contexts/LanguageContext';
+import successContext from './contexts/successContext';
 import stringsModule from './helpers/string';
 
 function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = React.useState('');
-  const language = React.useContext(LanguageContext);
+  const language = React.useContext(languageContext);
+  const [success, setSuccess] = successContext.useSuccess();
 
   const handleClick = (ev) => {
     // TODO - Update guessedWords
@@ -15,6 +17,9 @@ function Input({ secretWord }) {
 
     ev.preventDefault();
   }
+
+  if (success) return null;
+
   return (
     <div data-test='component-input'>
       <form className="form-inline">

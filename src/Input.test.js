@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import { findByTestAttr, checkProps } from '../test/testUtils';
 import LanguageContext from './contexts/LanguageContext';
 import Input from './Input';
+import successContext from './contexts/successContext';
 
 /**
  * Setup is a factory function to create a shallowWrapper for Congrats.
@@ -11,13 +12,16 @@ import Input from './Input';
  * @param {object} testValues - Context values specific to this setup.
  * @returns {ShallowWrapper}
  */
-const setup = ({language, secretWord}) => {
+const setup = ({language, secretWord, success}) => {
   language = language || 'en';
   secretWord = secretWord || 'party';
+  success = success || false;
 
   return mount(
     <LanguageContext.Provider value={language}>
-      <Input secretWord={secretWord} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Input secretWord={secretWord} />
+      </successContext.SuccessProvider>
     </LanguageContext.Provider>
   );
 }
@@ -69,3 +73,8 @@ describe('LanguagePicker', () => {
     expect(submitButton.text()).toBe('🚀');
   });
 });
+
+test('Input component doesn\'t show when success is true', () => {
+  const wrapper = setup({secretWord: 'party', success: true});
+  expect(wrapper.isEmptyRender()).toBe(true);
+})
